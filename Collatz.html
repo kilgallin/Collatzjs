@@ -1,0 +1,73 @@
+<html>
+<head>
+<title>Binary Collatz function</title>
+<script>
+var init = -1;
+var n = 0;
+
+var run = function(){
+    if(init < 0) init = document.getElementById("initial").value;
+    var iter = document.getElementById("iterations").value;
+    var output=document.getElementById("output");
+    var i;
+    for(i = 0; i < iter; i++){
+        var row = output.insertRow(-1);
+        var cell1 = row.insertCell();
+        cell1.innerHTML = init;
+        var cell2 = row.insertCell();
+        var binary = "";
+        var translate = init;
+        var oneSum = 0;
+        while(translate > 0){
+            if(translate % 2 == 0){
+                binary = "0" + binary;
+                translate = translate/2;
+            } else {
+                binary = "1" + binary;
+                oneSum++;
+                translate = (translate-1)/2;
+            }
+        }
+        var pad = 60 - binary.length;
+        var cell3 = row.insertCell();
+        cell3.innerHTML = binary.length;
+        while(pad > 0){
+            binary = "0" + binary;
+            pad--;
+        }
+        cell2.innerHTML = binary;
+        var cell4 = row.insertCell();
+        cell4.innerHTML = oneSum;
+        var cell5 = row.insertCell();
+        cell5.innerHTML = (n++);
+        
+        if(init % 2 == 0) {
+            init = init/2;
+        }
+        else {
+            init = 3*init + 1;
+        }
+        if(init < 2){
+            init = -1;
+            return false;
+        }
+    }
+    
+    return false;
+}
+</script>
+</head>
+<body>
+<p>
+This site displays the results of the Collatz function (f(x) = x/2 if x is even,
+3x+1 if x is odd) in binary and decimal.</p>
+<form name="setup" onsubmit="return run()">
+    Initial value: <input type="text" id="initial">
+    Maximum iterations: <input type="text" id="iterations">
+    <input type="submit">
+</form>
+<table id="output">
+<tr><td>Iterations<td>Binary<td>Length<td>Ones<td>Decimal</tr>
+</table>
+</body>
+</html>
